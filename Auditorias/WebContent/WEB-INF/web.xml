@@ -49,4 +49,14 @@
     <servlet-name>ServletAuditorias</servlet-name>
     <url-pattern>/ServletAuditorias</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ServletCrearAuditoria</display-name>
+    <servlet-name>ServletCrearAuditoria</servlet-name>
+    <servlet-class>controller.ServletCrearAuditoria</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletCrearAuditoria</servlet-name>
+    <url-pattern>/ServletCrearAuditoria</url-pattern>
+  </servlet-mapping>
 </web-app>
