@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import model.Empleado;
 import model.Usuario;
 import util.ConexionBD;
 
@@ -78,5 +81,30 @@ public class UsuarioDao {
 		}
 	}
 	
-	
+	public List<Usuario> obtenerUsuariosLider() {
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT U.ID_USUARIO, "
+					+ "E.NOMBRE ||' '|| E.APELLIDO_PATERNO ||' '|| E.APELLIDO_MATERNO "
+					+ "FROM USUARIO U "
+					+ "JOIN EMPLEADO E "
+					+ "ON U.ID_USUARIO = E.ID_EMPLEADO "
+					+ "WHERE U.LIDER = 'SI'");
+
+			while (rs.next()) {
+				Usuario usuario = new Usuario();
+				usuario.setIdUsuario(rs.getInt(1));
+				usuario.setUsuario(rs.getString(2));
+				
+				usuarios.add(usuario);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return usuarios;
+	}
 }

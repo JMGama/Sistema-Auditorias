@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import dao.EmpleadoDao;
 import dao.GrupoDao;
 import dao.RolDao;
+import dao.UsuarioDao;
 
 /**
  * Servlet implementation class ServletCrearAuditoria
@@ -44,12 +45,11 @@ public class ServletCrearAuditoria extends HttpServlet {
 		} else{
 		
 			if (action.equals("crearAuditoria")) {
-				EmpleadoDao empleado = new EmpleadoDao();
+				UsuarioDao usuario = new UsuarioDao();
 				GrupoDao grupo = new GrupoDao();
 				RolDao rol = new RolDao();
-				request.setAttribute("empleados", empleado.obtenerEmpleados());
+				request.setAttribute("usuarios", usuario.obtenerUsuariosLider());
 				request.setAttribute("grupos", grupo.obtenerGrupos());
-				request.setAttribute("roles", rol.obtenerRoles());
 				forward = "/formularioAuditorias.jsp";
 			}else if (action.equals("home")) {
 				forward = "/menuPrincipal.jsp";
