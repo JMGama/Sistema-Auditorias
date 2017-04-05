@@ -33,16 +33,18 @@
 				Auditoria</a></li>
 		<li><a href="ServletCrearUsuario?action=crearUsuario">Crear
 				Usuario</a></li>
-		<li class="divider"></li>
 		<li><a href="#!">Crear Grupo</a></li>
+		<li><a href="ServletCrearProceso?action=crearProceso">Crear
+				Proceso</a></li>
 	</ul>
 	<ul id="dropdown2" class="dropdown-content">
 		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear
 				Auditoria</a></li>
 		<li><a href="ServletCrearUsuario?action=crearUsuario">Crear
 				Usuario</a></li>
-		<li class="divider"></li>
 		<li><a href="#!">Crear Grupo</a></li>
+		<li><a href="ServletCrearProceso?action=crearProceso">Crear
+				Proceso</a></li>
 	</ul>
 	<nav class="teal">
 	<div class="nav-wrapper container">
@@ -72,54 +74,40 @@
 	<br>
 	<div class="container">
 		<div class="row">
-			<form id="formulario" class="col s12" action="ServletCrearUsuario"
+			<form id="formulario" class="col s12" action="ServletCrearAuditoria"
 				method="post">
 				<div class="row">
 					<div class="input-field col s6">
 						<i class="material-icons prefix">store_mall_directory</i> <input
-							name="usuario" id="usuario" type="text" class="validate">
+							name="claveNegocio" id="claveNegocio" type="text" class="validate">
 						<label for="icon_prefix">Clave del negocio</label>
 					</div>
 					<div class="input-field col s6">
 						<i class="material-icons prefix">today</i> <input id="fecha"
-							type="text" class="validate" disabled> <label
+							type="text" class="validate" name="fecha" disabled> <label
 							for="icon_prefix"> Fecha</label>
 					</div>
 				</div>
 
 				<br> <br>
 				<div class="row">
-					<div class="input-field col s11">
-						<i class="material-icons prefix">assignment</i> <select
-							id="selectRol">
-							<option value="" disabled selected>Selecciona el proceso</option>
-						</select>
-					</div>
-					<div class="input-field col s1">
-						<a id="agregar"
-							class="btn-floating btn-large waves-effect waves-light red"><i
-							class="material-icons">add</i></a>
-					</div>
-				</div>
-				<br> <br>
-				<div class="row">
 					<div class="input-field col s12">
-						<i class="material-icons prefix">layers</i> <label
-							for="icon_telephone">Procesos</label> <br> <br>
-						<table id="lista" class="card-panel">
-							<tr>
-								<th class="center">Proceso</th>
-								<th class="center">Nombre</th>
-								<th class="center">Accion</th>
-							</tr>
-						</table>
+						<i class="material-icons prefix">assignment</i> <select
+							id="procesos" name="procesos" multiple>
+							<option value="" disabled selected>Selecciona los procesos</option>
+							<c:forEach items="${procesos}" var="proceso">
+								<option value="<c:out value="${proceso.idProceso}" />"><c:out
+										value="${proceso.nombre}" />
+								</option>
+							</c:forEach>
+						</select>
 					</div>
 				</div>
 				<br> <br>
 				<div class="row">
 					<div class="input-field col s12">
 						<i class="material-icons prefix">verified_user</i> <select
-							id="grupo" name="grupo">
+							id="auditorLider" name="auditorLider">
 							<option value="" disabled selected>Auditor lider</option>
 							<c:forEach items="${usuarios}" var="usuario">
 								<option value="<c:out value="${usuario.idUsuario}" />"><c:out
@@ -132,34 +120,16 @@
 				<br>
 				<br>
 				<div class="row">
-					<div class="input-field col s11">
+					<div class="input-field col s12">
 						<i class="material-icons prefix">people</i> <select
-							id="selectGrupo">
+							id="grupos" name="grupos" multiple>
 							<option value="" disabled selected>Selecciona el grupo</option>
 							<c:forEach items="${grupos}" var="grupo">
-								<option value="<c:out value="${grupo.nombre}" />"><c:out
+								<option value="<c:out value="${grupo.idGrupo}" />"><c:out
 										value="${grupo.nombre}" />
 								</option>
 							</c:forEach>
 						</select>
-					</div>
-					<div class="input-field col s1">
-						<a id="agregarGrupo"
-							class="btn-floating btn-large waves-effect waves-light red"><i
-							class="material-icons">add</i></a>
-					</div>
-				</div>
-				<br> <br>
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">folder_shared</i> <label
-							for="icon_telephone">Grupos</label> <br> <br>
-						<table id="tablaGrupos" class="card-panel">
-							<tr>
-								<th class="center">Nombre del grupo</th>
-								<th class="center">Acciones</th>
-							</tr>
-						</table>
 					</div>
 				</div>
 				<br>
@@ -167,13 +137,13 @@
 				<div class="row">
 					<div class="input-field col s6">
 						<i class="material-icons prefix">equalizer</i>
-						<textarea id="textarea1" class="materialize-textarea"></textarea>
-						<label for="textarea1">Objetivo</label>
+						<textarea id="objetivo" name="objetivo" class="materialize-textarea"></textarea>
+						<label for="objetivo">Objetivo</label>
 					</div>
 					<div class="input-field col s6">
 						<i class="material-icons prefix">trending_up</i>
-						<textarea id="textarea1" class="materialize-textarea"></textarea>
-						<label for="textarea1">Alcance</label>
+						<textarea id="alcance" name="alcance" class="materialize-textarea"></textarea>
+						<label for="alcance">Alcance</label>
 					</div>
 				</div>
 				<br>
@@ -192,21 +162,15 @@
 				<br>
 				<br>
 				<div class="col s6 offset-s5">
-					<input type="hidden" name="action" value="login" />
-					<button class="btn waves-effect waves-light orange" type="submit"
-						name="action">
+					<input type="hidden" name="action" value="finalizarAuditoria" />
+					<button class="btn waves-effect waves-light orange" type="submit">
 						Submit <i class="material-icons right">send</i>
 					</button>
 				</div>
 			</form>
 		</div>
 	</div>
-
-
-
-	<br>
-	<br>
-	<br>
+	<br><br><br>
 	<footer class="page-footer teal">
 	<div class="container">
 		<div class="row">
@@ -246,43 +210,36 @@
 		$('select').material_select();
 	});
 
-	$(document).ready(
-			function() {
-				var f = new Date();
-				var fecha = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f
-						.getFullYear());
-				$("#fecha").val(fecha);
+	$(document).ready(function() {
+		var f = new Date();
+		var fecha = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f
+				.getFullYear());
+		$("#fecha").val(fecha);
 
-			})
-
-	$(document)
-			.ready(
-					function() {
-						var tam = 0
-						var cuenta = 0;
-						$("#agregarGrupo")
-								.click(
-										function() {
-											seleccion = $("#selectGrupo").val();
-											if (seleccion != null) {
-												$("#tablaGrupos")
-														.append(
-																'<tr id="'+cuenta+'">'
-																		+ '<td class="center">'
-																		+ seleccion
-																		+ '</td>'
-																		+ '<td class="center"> <a onclick="quitarFila('
-																		+ cuenta
-																		+ ')" class="waves-effect waves-light btn-floating red"> <i class="material-icons left"> delete </i> </a> </td>'
-																		+ '</tr>');
-												cuenta++;
-											}
-										});
-					});
-
-	function quitarFila(fila) {
-		var parent = document.getElementById(fila).parentNode;
-		parent.removeChild(document.getElementById(fila));
-	};
+	});
+	
+	$('#formulario').submit(function(e) {
+		if ($("#claveNegocio").val() == "" || $("#claveNegocio").val() == null) {
+			Materialize.toast('Es necesario definir la Clave del Negocio', 3000, 'rounded')
+			return false;
+		}else if ($("#procesos").val() == "" || $("#procesos").val() == null){
+			Materialize.toast('Es necesario seleccionar almenos un Proceso', 3000, 'rounded')
+			return false;
+		}else if ($("#auditorLider").val() == "" || $("#auditorLider").val() == null){
+			Materialize.toast('Es necesario seleccionar un Auditor Lider', 3000, 'rounded')
+			return false;
+		}else if ($("#grupos").val() == "" || $("#grupos").val() == null){
+			Materialize.toast('Es necesario seleccionar almenos un Grupo', 3000, 'rounded')
+			return false;
+		}else if ($("#objetivo").val() == "" || $("#objetivo").val() == null){
+			Materialize.toast('Es necesario definir el Objetivo', 3000, 'rounded')
+			return false;
+		}else if ($("#alcance").val() == "" || $("#alcance").val() == null){
+			Materialize.toast('Es necesario definir el Alcance', 3000, 'rounded')
+			return false;
+		}else{
+			return true;
+		}
+	});
 </script>
 </html>

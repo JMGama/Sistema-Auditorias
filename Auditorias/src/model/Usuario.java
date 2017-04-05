@@ -11,7 +11,14 @@ public class Usuario {
 	private int fkEmpleado;
 	private int fkGrupo;
 	private String lider;
+	private String estatus;
 	
+	public String getEstatus() {
+		return estatus;
+	}
+	public void setEstatus(String estatus) {
+		this.estatus = estatus;
+	}
 	public int getIdUsuario() {
 		return idUsuario;
 	}

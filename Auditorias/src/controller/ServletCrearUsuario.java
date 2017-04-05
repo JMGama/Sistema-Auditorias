@@ -122,6 +122,7 @@ public class ServletCrearUsuario extends HttpServlet {
 				nuevoUsuario.setFkEmpleado(idEmpleado);
 				nuevoUsuario.setFkGrupo(idGrupo);
 				nuevoUsuario.setLider(lider);
+				nuevoUsuario.setEstatus("ACTIVO");
 				
 				RolDao rolDao = new RolDao();
 				List<Rol> listaRoles = rolDao.obtenerRoles();

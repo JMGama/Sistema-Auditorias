@@ -1,10 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,23 +9,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.EmpleadoDao;
 import dao.GrupoDao;
 import dao.ProcesoDao;
 import dao.RolDao;
 import dao.UsuarioDao;
-import model.Auditoria;
+import model.Proceso;
 
 /**
- * Servlet implementation class ServletCrearAuditoria
+ * Servlet implementation class ServlerCrearProceso
  */
-public class ServletCrearAuditoria extends HttpServlet {
+public class ServletCrearProceso extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServletCrearAuditoria() {
+    public ServletCrearProceso() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -50,21 +45,17 @@ public class ServletCrearAuditoria extends HttpServlet {
 			forward = "/index.jsp";
 		} else{
 		
-			if (action.equals("crearAuditoria")) {
+			if (action.equals("crearProceso")) {
 				UsuarioDao usuario = new UsuarioDao();
 				GrupoDao grupo = new GrupoDao();
-				ProcesoDao proceso = new ProcesoDao();
-				request.setAttribute("usuarios", usuario.obtenerUsuariosLider());
-				request.setAttribute("grupos", grupo.obtenerGrupos());
-				request.setAttribute("procesos", proceso.obtenerProcesos());
-				forward = "/formularioAuditorias.jsp";
+				RolDao rol = new RolDao();
+				forward = "/formularioProcesos.jsp";
 			}else if (action.equals("home")) {
 				forward = "/menuPrincipal.jsp";
 			}
 		}
 		RequestDispatcher view = request.getRequestDispatcher(forward);
 		view.forward(request, response);
-		
 	}
 
 	/**
@@ -72,6 +63,7 @@ public class ServletCrearAuditoria extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		String action = request.getParameter("action");
 
 		String forward = "";
@@ -81,41 +73,32 @@ public class ServletCrearAuditoria extends HttpServlet {
 			forward = "/index.jsp";
 		} else{
 		
-			if (action.equals("finalizarAuditoria")) {
-				String claveNegocio = request.getParameter("claveNegocio");
-				String[] procesos = request.getParameterValues("procesos");
-				int fk_usuario = Integer.parseInt(request.getParameter("auditorLider"));
-				String[] grupos = request.getParameterValues("grupos");
-				String objetivo = request.getParameter("objetivo");
-				String alcance = request.getParameter("alcance");
+			if (action.equals("finalizarProceso")) {
+				String nombre = request.getParameter("nombre");
+				String descripcion = request.getParameter("descripcion");
 				
-				DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-				Date date = new Date();
-				String stringFecha = dateFormat.format(date);
-				Date fecha = null;
+				Proceso proceso = new Proceso();
+				ProcesoDao procesoDao = new ProcesoDao();
 				
-				try {
-					fecha = dateFormat.parse(stringFecha);
-				} catch (ParseException e) {
-					e.printStackTrace();
+				proceso.setIdProceso(procesoDao.getUltimoId());
+				proceso.setNombre(nombre);
+				proceso.setDescripcion(descripcion);
+				proceso.setEstatus("ACTIVO");
+				
+				boolean resultado = procesoDao.addProceso(proceso);
+				
+				if(resultado){
+					forward = "/mensajeExitoso.jsp";
+				}else{
+					forward = "/mensajeError.jsp";
 				}
 				
-				Auditoria auditoria = new Auditoria();
-				auditoria.setClaveNegocio(claveNegocio);
-				auditoria.setFecha(fecha);
-				auditoria.setEstatus("ACTIVO");
-				auditoria.setObjetivo(objetivo);
-				auditoria.setAlcance(alcance);
-				auditoria.setFk_usuario(fk_usuario);
-				
-				forward = "/formularioAuditorias.jsp";
 			}else if (action.equals("home")) {
 				forward = "/menuPrincipal.jsp";
 			}
 		}
 		RequestDispatcher view = request.getRequestDispatcher(forward);
-		view.forward(request, response);
-		
+		view.forward(request, response);	
 	}
 
 }

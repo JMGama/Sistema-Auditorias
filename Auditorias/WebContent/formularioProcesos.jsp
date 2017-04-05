@@ -21,7 +21,7 @@
 
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Crear Ususario</title>
+<title>Crear Proceso</title>
 </head>
 <body>
 	<script type="text/javascript"
@@ -48,9 +48,9 @@
 	</ul>
 	<nav class="teal">
 	<div class="nav-wrapper container">
-		<a href="ServletCrearUsuario?action=home" class="brand-logo"> Sistema Auditorias</a> <a href="#!"
-			data-activates="mobile-demo" class="button-collapse"><i
-			class="material-icons">menu</i></a>
+		<a href="ServletCrearUsuario?action=home" class="brand-logo">
+			Sistema Auditorias</a> <a href="#!" data-activates="mobile-demo"
+			class="button-collapse"><i class="material-icons">menu</i></a>
 		<ul class="right hide-on-med-and-down">
 			<li><a href="ServletCalendario?action=calendario">Calendario</a></li>
 			<li><a href="ServletAuditorias?action=auditorias">Auditorias</a></li>
@@ -74,95 +74,33 @@
 	<br>
 	<div class="container">
 		<div class="row">
-			<form id="formulario" class="col s12" action="ServletCrearUsuario" method="post">
+			<form id="formulario" class="col s12" action="ServletCrearProceso"
+				method="post">
 				<div class="row">
 					<div class="input-field col s6">
-						<i class="material-icons prefix">perm_identity</i> 
-						<select id="select" name="empleado">
-							<option value="" disabled selected>Selecciona al Empleado</option>
-							<c:forEach items="${empleados}" var="empleado">
-								<option value="<c:out value="${empleado.idEmpleado}" />"><c:out value="${empleado.nombre}" /> <c:out value="${empleado.apellidoPaterno}" />
-								</option>
-							</c:forEach>
-						</select>
+						<i class="material-icons prefix">assignment</i> <input
+							name="nombre" id="nombre" type="text" class="validate">
+						<label for="icon_prefix">Nombre del proceso</label>
 					</div>
 					<div class="input-field col s6">
-						<i class="material-icons prefix">search</i> 
-						<input id="filtro" type="text" class="validate" > <label
-							for="icon_prefix">Filtrar Por Nombre</label>
-					</div>
-				</div>
-				
-				<br> <br>
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">account_circle</i> <input name="usuario"
-							id="usuario" type="text" class="validate"> <label
-							for="icon_prefix">Usuario</label>
-					</div>
-				</div>
-				<br> <br>
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">vpn_key</i> <input name="contrasenia"
-							id="contrasenia" type="password" class="validate"> <label
-							for="icon_telephone">Contraseña</label>
-					</div>
-				</div>
-				<br> <br>
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">recent_actors</i> 
-						<select id="grupo" name="grupo">
-							<option value="" disabled selected>Selecciona el grupo</option>
-							<c:forEach items="${grupos}" var="grupo">
-								<option value="<c:out value="${grupo.idGrupo}" />"><c:out value="${grupo.nombre}" />
-								</option>
-							</c:forEach>
-						</select>
+						<i class="material-icons prefix">today</i> <input id="fecha"
+							type="text" class="validate" disabled> <label
+							for="icon_prefix"> Fecha</label>
 					</div>
 				</div>
 				<br>
+				<br>
 				<div class="row">
 					<div class="input-field col s12">
-						<p>
-							<i class="material-icons prefix">verified_user</i> 
-					      	<input type="checkbox" id="lider" name="lider" />
-					      	<label for="lider">Usuario Lider</label>
-					    </p>
+						<i class="material-icons prefix">bookmark_border</i>
+						<textarea name="descripcion" id="descripcion" class="materialize-textarea"></textarea>
+						<label for="textarea1">Descripcion</label>
 					</div>
 				</div>
-				<br><br>
-				<br><br>
-				<div class="row">
-					<div class="input-field col s11">
-						<i class="material-icons prefix">work</i> 
-						<select id="selectRol">
-							<option value="" disabled selected>Selecciona el rol</option>
-							<c:forEach items="${roles}" var="rol">
-								<option value="<c:out value="${rol.nombre}" />"><c:out value="${rol.nombre}" />
-								</option>
-							</c:forEach>
-						</select>
-					</div>
-					<div class="input-field col s1">
-						<a id="agregar" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
-					</div>
-				</div>
-				<br><br>
-				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">reorder</i>
-						<label for="icon_telephone">Roles</label>
-						<br><br>
-						<ul id="lista" class="collection"></ul>
-					</div>
-				</div>
-				<input id="roles" type="hidden" name="roles" value="">
-				<input type="hidden" name="action" value="finalizarUsuario">
 				<br><br>
 				<div class="col s6 offset-s5">
-					<input type="hidden" name="action" value="login" />
+				
+					<input type="hidden" name="action" value="finalizarProceso" />
 					<button class="btn waves-effect waves-light orange" type="submit"
 						name="action">
 						Submit <i class="material-icons right">send</i>
@@ -171,7 +109,7 @@
 			</form>
 		</div>
 	</div>
-	
+
 
 
 	<br>
@@ -205,56 +143,31 @@
 	</div>
 	</footer>
 
-
 </body>
 <script>
 	$(document).ready(function() {
 		$(".button-collapse").sideNav();
 	})
-	
+
 	$(document).ready(function() {
 		$('select').material_select();
 	});
 	
 	$(document).ready(function() {
-		var tam = 0
-		$("#agregar").click(function () {
-			seleccion = $("#selectRol").val();
-			if (seleccion != null){
-				$("#lista").append('<li class="collection-item" >'+seleccion+'</li>');
-				if (tam == 0) {
-					dato = $("#roles").val();
-					dato = dato + seleccion;
-					$("#roles").val(dato);
-				}else{
-					dato = $("#roles").val();
-					dato = dato +","+ seleccion;
-					$("#roles").val(dato);
-				}
-				tam++
-			}     
-		 });
-	});
+		var f = new Date();
+		var fecha = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f
+				.getFullYear());
+		$("#fecha").val(fecha);
+
+	})
 	
 	$('#formulario').submit(function(e) {
-		if($("#lider").val() == null){
-			$("#lider").val("NO");
-		}
 		
-		if ($("#select").val() == null) {
-			Materialize.toast('Tienes que seleccionar un empleado', 3000, 'rounded')
+		if ($("#nombre").val() == "" || $("#nombre").val() == null) {
+			Materialize.toast('Es necesario definir un nombre', 3000, 'rounded')
 			return false;
-		}else if ($("#usuario").val() == ""){
-			Materialize.toast('El Usuario no puede estar vacio', 3000, 'rounded')
-			return false;
-		}else if ($("#contrasenia").val() == ""){
-			Materialize.toast('La contraseña no puede estar vacia', 3000, 'rounded')
-			return false;
-		}else if ($("#grupo").val() == null){
-			Materialize.toast('Es necesario seleccionar un grupo ', 3000, 'rounded')
-			return false;
-		}else if ($("#roles").val() == ""){
-			Materialize.toast('Necesitas seleccionar almenos 1 rol', 3000, 'rounded')
+		}else if ($("#descripcion").val() == "" || $("#descripcion").val() == null){
+			Materialize.toast('Tienes que poner una descripcion', 3000, 'rounded')
 			return false;
 		}else{
 			return true;
