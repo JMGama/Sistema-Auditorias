@@ -9,6 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.AuditoriaDao;
+import dao.DetalleAuditoriaProcesoDao;
+import dao.EmpleadoDao;
+import dao.ProcesoDao;
+import dao.UsuarioDao;
+
 /**
  * Servlet implementation class ServletAuditorias
  */
@@ -39,6 +45,15 @@ public class ServletAuditorias extends HttpServlet {
 			forward = "/index.jsp";
 		} else {
 			if (action.equals("auditorias")) {
+				AuditoriaDao auditoriaDao = new AuditoriaDao();
+				UsuarioDao usuarioDao = new UsuarioDao();
+				DetalleAuditoriaProcesoDao detalleAuditoriaProcesoDao = new DetalleAuditoriaProcesoDao();
+				ProcesoDao procesoDao = new ProcesoDao();
+				
+				request.setAttribute("usuarios", usuarioDao.obtenerUsuariosLider());
+				request.setAttribute("auditorias", auditoriaDao.obtenerAuditoria());
+				request.setAttribute("procesos", procesoDao.obtenerProcesos());
+				request.setAttribute("detalleAuditoriasProcesos", detalleAuditoriaProcesoDao.obtenerDetalleAuditoriaGrupo());
 				
 				forward = "/auditorias.jsp";
 			}else if (action.equals("home")) {
@@ -55,7 +70,7 @@ public class ServletAuditorias extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		
 	}
 
 }

@@ -74,45 +74,63 @@
 	<br>
 
 	<div class="container">
-		<form class="col s12">
-			<div class="row">
-				<div class="col s9"></div>
-				<div class="input-field col s3">
-					<i class="material-icons prefix">search</i>
-		          	<input id="icon_prefix" type="text" class="validate">
-		          	<label for="icon_prefix">Busqueda</label>
-				</div>
+		<div class="row">
+			<div class="col s9"></div>
+			<div class="input-field col s3">
+				<i class="material-icons prefix">search</i>
+	          	<input id="icon_prefix" type="text" class="validate">
+	          	<label for="icon_prefix">Busqueda</label>
 			</div>
-			<div class="row">
-				<div class="input-field col s12">
-					<i class="material-icons prefix">assignments</i>
-					<label for="icon_telephone">Auditorias</label>
-					<br><br>
-					<table class="card-panel">
+		</div>
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">assignments</i>
+				<label for="icon_telephone">Auditorias</label>
+				<br><br>
+				<table class="card-panel">
+					<tr>
+						<th class="center">Clave de Negocio</th>
+						<th class="center">Auditor Lider</th>
+						<th class="center">Procesos</th>
+						<th class="center">Fecha</th>
+						<th class="center">Acciones</th>
+					</tr>
+					<c:forEach items="${auditorias}" var="auditoria">
 						<tr>
-							<th class="center">Clave</th>
-							<th class="center">Descripcion</th>
-							<th class="center">Procesos</th>
-							<th class="center">Fecha</th>
-							<th class="center">Acciones</th>
-						</tr>
-						<%for(int i = 0;i < 3;i++) { %>
-						<tr>
-							<td class="center">1</td>
-							<td class="center">Auditoria 1</td>
-							<td class="center">Proceso1, Proceso2, Proceso3, Proceso4</td>
-							<td class="center">11/08/2010</td>
+							<td class="center"><c:out value="${auditoria.claveNegocio}" /></td>
+							<c:forEach items="${usuarios}" var="usuario">
+								<c:if test="${usuario.idUsuario == auditoria.fk_usuario}">
+									<td class="center"><c:out value="${usuario.usuario}" /></td>
+								</c:if>
+							</c:forEach>
 							<td class="center">
-								<a class="waves-effect waves-light btn-floating red"><i class="material-icons left">delete</i></a>
+								<c:forEach items="${detalleAuditoriasProcesos}" var="detalleAuditoriasProceso">
+									<c:if test="${detalleAuditoriasProceso.fkAuditoria == auditoria.idAuditoria}">
+										<c:forEach items="${procesos}" var="proceso">
+											<c:if test="${detalleAuditoriasProceso.fkProceso == proceso.idProceso}">
+												<c:out value="- ${proceso.nombre}"/>
+											</c:if>
+										</c:forEach>
+									</c:if>
+								</c:forEach>
+							</td>
+							<td class="center"><c:out value="${auditoria.fecha}" /></td>
+							<td class="center">
+								<form action="ServletAuditorias" method="post">
+									<a class="waves-effect waves-light btn-floating red"><i class="material-icons left">delete</i></a>
+								</form>
+								<form action="ServletAuditorias" method="post">
 								<a class="waves-effect waves-light btn-floating cyan"><i class="material-icons left">border_color</i></a>
+								</form>
+								<form action="ServletAuditorias" method="post">
 								<a class="waves-effect waves-light btn-floating blue"><i class="material-icons left">access_time</i></a>
+								</form>
 							</td>
 						</tr>
-						<%} %>
-					</table>
-				</div>
+					</c:forEach>
+				</table>
 			</div>
-		</form>
+		</div>
 	</div>
 		
 	<br>
@@ -141,7 +159,7 @@
 		</div>
 	</div>
 	<div class="footer-copyright">
-		<div class="container">© 2017 Copyright Gama Estrada José Manuel
+		<div class="container">Â© 2017 Copyright Gama Estrada JosÃ© Manuel
 		</div>
 	</div>
 	</footer>

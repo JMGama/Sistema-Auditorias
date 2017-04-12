@@ -13,12 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.AuditoriaDao;
+import dao.DetalleAuditoriaGrupoDao;
+import dao.DetalleAuditoriaProcesoDao;
 import dao.EmpleadoDao;
 import dao.GrupoDao;
 import dao.ProcesoDao;
 import dao.RolDao;
 import dao.UsuarioDao;
 import model.Auditoria;
+import model.DetalleAuditoriaGrupo;
+import model.DetalleAuditoriaProceso;
 
 /**
  * Servlet implementation class ServletCrearAuditoria
@@ -101,6 +106,9 @@ public class ServletCrearAuditoria extends HttpServlet {
 				}
 				
 				Auditoria auditoria = new Auditoria();
+				AuditoriaDao auditoriaDao = new AuditoriaDao();
+				
+				auditoria.setIdAuditoria(auditoriaDao.getUltimoId());
 				auditoria.setClaveNegocio(claveNegocio);
 				auditoria.setFecha(fecha);
 				auditoria.setEstatus("ACTIVO");
@@ -108,7 +116,35 @@ public class ServletCrearAuditoria extends HttpServlet {
 				auditoria.setAlcance(alcance);
 				auditoria.setFk_usuario(fk_usuario);
 				
-				forward = "/formularioAuditorias.jsp";
+				boolean resultado = auditoriaDao.addAuditoria(auditoria);
+				
+				for (int i = 0; i < procesos.length; i++) {
+					DetalleAuditoriaProceso detalleAuditoriaProceso = new DetalleAuditoriaProceso();
+					DetalleAuditoriaProcesoDao detalleAuditoriaProcesoDao = new DetalleAuditoriaProcesoDao();
+					detalleAuditoriaProceso.setFkAuditoria(auditoria.getIdAuditoria());
+					detalleAuditoriaProceso.setFkProceso(Integer.parseInt(procesos[i]));
+					boolean resDetAuPro = detalleAuditoriaProcesoDao.addDetalleAuditoriaProceso(detalleAuditoriaProceso);
+					if (!resDetAuPro){
+						resultado = false;
+					}
+				}
+				
+				for (int i = 0; i < grupos.length; i++) {
+					DetalleAuditoriaGrupo detalleAuditoriaGrupo = new DetalleAuditoriaGrupo();
+					DetalleAuditoriaGrupoDao detalleAuditoriaGrupoDao = new DetalleAuditoriaGrupoDao();
+					detalleAuditoriaGrupo.setFkAuditoria(auditoria.getIdAuditoria());
+					detalleAuditoriaGrupo.setFkGrupo(Integer.parseInt(grupos[i]));
+					boolean resDerAuGru = detalleAuditoriaGrupoDao.addDetalleAuditoriaGrupo(detalleAuditoriaGrupo);
+					if (!resDerAuGru){
+						resultado = false;
+					}
+				}
+				
+				if(resultado){
+					forward = "/mensajeExitoso.jsp";
+				}else{
+					forward = "/mensajeError.jsp";
+				}
 			}else if (action.equals("home")) {
 				forward = "/menuPrincipal.jsp";
 			}
