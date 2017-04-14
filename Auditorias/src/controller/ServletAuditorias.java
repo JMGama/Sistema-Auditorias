@@ -56,6 +56,22 @@ public class ServletAuditorias extends HttpServlet {
 				request.setAttribute("detalleAuditoriasProcesos", detalleAuditoriaProcesoDao.obtenerDetalleAuditoriaGrupo());
 				
 				forward = "/auditorias.jsp";
+			} else if(action.equals("borrarAuditoria")) {
+				AuditoriaDao auditoriaDao = new AuditoriaDao();
+				UsuarioDao usuarioDao = new UsuarioDao();
+				DetalleAuditoriaProcesoDao detalleAuditoriaProcesoDao = new DetalleAuditoriaProcesoDao();
+				ProcesoDao procesoDao = new ProcesoDao();
+				
+				int idAuditoria = Integer.parseInt(request.getParameter("idAuditoria"));
+				
+				auditoriaDao.borrarAuditoria(idAuditoria);
+				
+				request.setAttribute("usuarios", usuarioDao.obtenerUsuariosLider());
+				request.setAttribute("auditorias", auditoriaDao.obtenerAuditoria());
+				request.setAttribute("procesos", procesoDao.obtenerProcesos());
+				request.setAttribute("detalleAuditoriasProcesos", detalleAuditoriaProcesoDao.obtenerDetalleAuditoriaGrupo());
+				
+				forward = "/auditorias.jsp";
 			}else if (action.equals("home")) {
 				forward = "/menuPrincipal.jsp";
 			}
