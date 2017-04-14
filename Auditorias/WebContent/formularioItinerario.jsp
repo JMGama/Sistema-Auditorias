@@ -21,7 +21,7 @@
 
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Crear Proceso</title>
+<title>Crear Itinerario</title>
 </head>
 <body>
 	<script type="text/javascript"
@@ -74,47 +74,65 @@
 	<br>
 	<div class="container">
 		<div class="row">
-			<form id="formulario" class="col s12" action="ServletCrearProceso"
+			<form id="formulario" class="col s12" action="ServletCrearAuditoria"
 				method="post">
 				<div class="row">
 					<div class="input-field col s6">
-						<i class="material-icons prefix">assignment</i> <input
-							name="nombre" id="nombre" type="text" class="validate">
-						<label for="icon_prefix">Nombre del proceso</label>
+						<i class="material-icons prefix" name="icono">today</i><label
+							for="icono">Fecha</label><br> <input id="fecha" type="date"
+							class="datepicker" name="fecha" >
 					</div>
-					<div class="input-field col s6">
-						<label for="icon_prefix"> :</label>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">alarm</i> <br>
+						<input id="hora" type="number" class="validate" >
+						<label for="icon_prefix">Hora</label>
 					</div>
-					<div class="input-field col s6">
-						<i class="material-icons prefix">today</i> <input id="fecha"
-							type="text" class="validate" disabled> <label
-							for="icon_prefix"> Fecha</label>
+					<div class="input-field col s0">
+						<br>
+						<p style="font-weight: bold;">:</p>
+					</div>
+					<div class="input-field col s2">
+						<br>
+						<input id="minutos" type="number" class="validate" >
+						<label for="icon_prefix">Minutos</label>
 					</div>
 				</div>
-				<br>
-				<br>
+
+				<br> <br>
 				<div class="row">
 					<div class="input-field col s12">
-						<i class="material-icons prefix">bookmark_border</i>
-						<textarea name="descripcion" id="descripcion" class="materialize-textarea"></textarea>
-						<label for="textarea1">Descripcion</label>
+						<i class="material-icons prefix">place</i> <select
+							id="procesos" name="procesos">
+							<option value="" disabled selected>Selecciona la ubicacion</option>
+							<c:forEach items="${procesos}" var="proceso">
+								<option value="<c:out value="${proceso.idProceso}" />"><c:out
+										value="${proceso.nombre}" />
+								</option>
+							</c:forEach>
+						</select>
 					</div>
 				</div>
-				<br><br>
+				<br> <br>
+				<div class="row">
+					<div class="input-field col s11">
+						<i class="material-icons prefix" name="icono">assignment</i><label
+							for="icono">Actividad</label><br> <input id="fecha" type="text"
+							class="validate" name="fecha">
+					</div>
+					<div class="input-field col s1">
+						<a id="agregar" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+					</div>
+				</div>
+				<br> <br>
 				<div class="col s6 offset-s5">
-				
-					<input type="hidden" name="action" value="finalizarProceso" />
-					<button class="btn waves-effect waves-light orange" type="submit"
-						name="action">
+					<input type="hidden" name="action" value="finalizarAuditoria" />
+					<button class="btn waves-effect waves-light orange" type="submit">
 						Guardar <i class="material-icons right">send</i>
 					</button>
 				</div>
 			</form>
 		</div>
 	</div>
-
-
-
 	<br>
 	<br>
 	<br>
@@ -146,8 +164,15 @@
 	</div>
 	</footer>
 
+
 </body>
 <script>
+	$('.datepicker').pickadate({
+		selectMonths : true, // Creates a dropdown to control month
+		selectYears : 15
+	// Creates a dropdown of 15 years to control year
+	});
+
 	$(document).ready(function() {
 		$(".button-collapse").sideNav();
 	})
@@ -155,26 +180,40 @@
 	$(document).ready(function() {
 		$('select').material_select();
 	});
-	
-	$(document).ready(function() {
-		var f = new Date();
-		var fecha = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f
-				.getFullYear());
-		$("#fecha").val(fecha);
 
-	})
-	
-	$('#formulario').submit(function(e) {
-		
-		if ($("#nombre").val() == "" || $("#nombre").val() == null) {
-			Materialize.toast('Es necesario definir un nombre', 3000, 'rounded')
-			return false;
-		}else if ($("#descripcion").val() == "" || $("#descripcion").val() == null){
-			Materialize.toast('Tienes que poner una descripcion', 3000, 'rounded')
-			return false;
-		}else{
-			return true;
-		}
-	});
+	$('#formulario').submit(
+			function(e) {
+				if ($("#claveNegocio").val() == ""
+						|| $("#claveNegocio").val() == null) {
+					Materialize.toast(
+							'Es necesario definir la Clave del Negocio', 3000,
+							'rounded')
+					return false;
+				} else if ($("#procesos").val() == ""
+						|| $("#procesos").val() == null) {
+					Materialize.toast(
+							'Es necesario seleccionar almenos un Proceso',
+							3000, 'rounded')
+					return false;
+				} else if ($("#auditorLider").val() == ""
+						|| $("#auditorLider").val() == null) {
+					Materialize.toast(
+							'Es necesario seleccionar un Auditor Lider', 3000,
+							'rounded')
+					return false;
+				} else if ($("#grupos").val() == ""
+						|| $("#grupos").val() == null) {
+					Materialize.toast(
+							'Es necesario seleccionar almenos un Grupo', 3000,
+							'rounded')
+					return false;
+				} else if ($("#objetivo").val() == ""
+						|| $("#objetivo").val() == null) {
+					Materialize.toast('Es necesario definir el Objetivo', 3000,
+							'rounded')
+					return false;
+				} else {
+					return true;
+				}
+			});
 </script>
-</html>

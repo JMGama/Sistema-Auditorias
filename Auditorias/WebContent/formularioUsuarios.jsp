@@ -165,7 +165,7 @@
 					<input type="hidden" name="action" value="login" />
 					<button class="btn waves-effect waves-light orange" type="submit"
 						name="action">
-						Submit <i class="material-icons right">send</i>
+						Guardar <i class="material-icons right">send</i>
 					</button>
 				</div>
 			</form>

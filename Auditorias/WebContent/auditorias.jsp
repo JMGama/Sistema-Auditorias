@@ -70,8 +70,7 @@
 	</div>
 	</nav>
 
-	<br>
-	<br>
+	<br><br><br><br>
 
 	<div class="container">
 		<div class="row">
@@ -82,6 +81,9 @@
 	          	<label for="icon_prefix">Busqueda</label>
 			</div>
 		</div>
+		
+		<br><br><br>
+		
 		<div class="row">
 			<div class="input-field col s12">
 				<i class="material-icons prefix">assignments</i>
@@ -114,17 +116,11 @@
 									</c:if>
 								</c:forEach>
 							</td>
-							<td class="center"><c:out value="${auditoria.fecha}" /></td>
+							<td class="center"><c:out value="${auditoria.fecha}"/></td>
 							<td class="center">
-								<form action="ServletAuditorias" method="post">
-									<a class="waves-effect waves-light btn-floating red"><i class="material-icons left">delete</i></a>
-								</form>
-								<form action="ServletAuditorias" method="post">
 								<a class="waves-effect waves-light btn-floating cyan"><i class="material-icons left">border_color</i></a>
-								</form>
-								<form action="ServletAuditorias" method="post">
 								<a class="waves-effect waves-light btn-floating blue"><i class="material-icons left">access_time</i></a>
-								</form>
+								<a onclick="eliminar(<c:out value="${auditoria.idAuditoria}" />)" class="waves-effect waves-light btn-floating red"><i class="material-icons left">delete</i></a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -133,9 +129,8 @@
 		</div>
 	</div>
 		
-	<br>
-	<br>
-	<br>
+	<br><br><br>
+	
 	<footer class="page-footer teal">
 	<div class="container">
 		<div class="row">
@@ -170,5 +165,9 @@
 	$(document).ready(function() {
 		$(".button-collapse").sideNav();
 	})
+	
+	function eliminar(Auditoria) {
+		self.location = "${pageContext.request.contextPath}/ServletAuditorias?action=borrarAuditoria&idAuditoria=" + Auditoria;
+	}
 </script>
 </html>

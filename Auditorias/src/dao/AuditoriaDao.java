@@ -61,7 +61,7 @@ public Connection connection;
 
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM AUDITORIA");
+			ResultSet rs = statement.executeQuery("SELECT * FROM AUDITORIA WHERE ESTATUS = 'ACTIVO'");
 
 			while (rs.next()) {
 				Auditoria auditoria = new Auditoria();
@@ -81,5 +81,21 @@ public Connection connection;
 		}
 
 		return auditorias;
+	}
+
+	public boolean borrarAuditoria(int idAuditoria) {
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE AUDITORIA SET ESTATUS = 'NO ACTIVO' "
+					+ "WHERE ID_AUDITORIA = "+ idAuditoria);
+			
+			preparedStatement.executeUpdate();
+			
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 }

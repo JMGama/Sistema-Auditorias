@@ -96,8 +96,7 @@
 							id="procesos" name="procesos" multiple>
 							<option value="" disabled selected>Selecciona los procesos</option>
 							<c:forEach items="${procesos}" var="proceso">
-								<option value="<c:out value="${proceso.idProceso}" />"><c:out
-										value="${proceso.nombre}" />
+								<option value="<c:out value="${proceso.idProceso}" />"><c:out value="${proceso.nombre}" />
 								</option>
 							</c:forEach>
 						</select>
@@ -110,9 +109,7 @@
 							id="auditorLider" name="auditorLider">
 							<option value="" disabled selected>Auditor lider</option>
 							<c:forEach items="${usuarios}" var="usuario">
-								<option value="<c:out value="${usuario.idUsuario}" />"><c:out
-										value="${usuario.usuario}" />
-								</option>
+								<option value="<c:out value="${usuario.idUsuario}" />"><c:out value="${usuario.usuario}" /></option>
 							</c:forEach>
 						</select>
 					</div>
@@ -125,8 +122,7 @@
 							id="grupos" name="grupos" multiple>
 							<option value="" disabled selected>Selecciona el grupo</option>
 							<c:forEach items="${grupos}" var="grupo">
-								<option value="<c:out value="${grupo.idGrupo}" />"><c:out
-										value="${grupo.nombre}" />
+								<option value="<c:out value="${grupo.idGrupo}" />"><c:out value="${grupo.nombre}" />
 								</option>
 							</c:forEach>
 						</select>
@@ -164,7 +160,7 @@
 				<div class="col s6 offset-s5">
 					<input type="hidden" name="action" value="finalizarAuditoria" />
 					<button class="btn waves-effect waves-light orange" type="submit">
-						Submit <i class="material-icons right">send</i>
+						Continuar <i class="material-icons right">send</i>
 					</button>
 				</div>
 			</form>
