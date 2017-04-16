@@ -7,3 +7,6 @@ El proyecto está realizado con:
 * Oracle
 * jstl
 * ojdbc6
+
+# Base de datos
+![alt tag](https://github.com/JMGama/Sistema-Auditorias/blob/master/DATA%20BASE.PNG)
