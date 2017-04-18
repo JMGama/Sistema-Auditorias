@@ -141,7 +141,7 @@ public class ServletCrearAuditoria extends HttpServlet {
 				}
 				
 				if(resultado){
-					forward = "/mensajeExitoso.jsp";
+					forward = "/ServletActividades?idAuditoria=" + auditoria.getIdAuditoria();
 				}else{
 					forward = "/mensajeError.jsp";
 				}

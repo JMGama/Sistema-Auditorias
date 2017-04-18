@@ -14,7 +14,7 @@ import util.ConexionBD;
 
 public class AuditoriaDao {
 
-public Connection connection;
+	public Connection connection;
 	
 	public AuditoriaDao(){
 		connection = ConexionBD.getConnection();

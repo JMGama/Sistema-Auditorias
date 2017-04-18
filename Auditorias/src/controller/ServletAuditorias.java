@@ -72,6 +72,12 @@ public class ServletAuditorias extends HttpServlet {
 				request.setAttribute("detalleAuditoriasProcesos", detalleAuditoriaProcesoDao.obtenerDetalleAuditoriaGrupo());
 				
 				forward = "/auditorias.jsp";
+			}else if(action.equals("modificarItinerario")) {
+				AuditoriaDao auditoriaDao = new AuditoriaDao();
+				
+				int idAuditoria = Integer.parseInt(request.getParameter("idAuditoria"));
+				
+				forward = "/ServletActividades?idAuditoria=" + idAuditoria;
 			}else if (action.equals("home")) {
 				forward = "/menuPrincipal.jsp";
 			}

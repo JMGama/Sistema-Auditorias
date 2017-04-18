@@ -119,7 +119,7 @@
 							<td class="center"><c:out value="${auditoria.fecha}"/></td>
 							<td class="center">
 								<a class="waves-effect waves-light btn-floating cyan"><i class="material-icons left">border_color</i></a>
-								<a class="waves-effect waves-light btn-floating blue"><i class="material-icons left">access_time</i></a>
+								<a onclick="modificarItinerario(<c:out value="${auditoria.idAuditoria}" />)" class="waves-effect waves-light btn-floating blue"><i class="material-icons left">access_time</i></a>
 								<a onclick="eliminar(<c:out value="${auditoria.idAuditoria}" />)" class="waves-effect waves-light btn-floating red"><i class="material-icons left">delete</i></a>
 							</td>
 						</tr>
@@ -168,6 +168,9 @@
 	
 	function eliminar(Auditoria) {
 		self.location = "${pageContext.request.contextPath}/ServletAuditorias?action=borrarAuditoria&idAuditoria=" + Auditoria;
+	}
+	function modificarItinerario(Auditoria) {
+		self.location = "${pageContext.request.contextPath}/ServletAuditorias?action=modificarItinerario&idAuditoria=" + Auditoria;
 	}
 </script>
 </html>
