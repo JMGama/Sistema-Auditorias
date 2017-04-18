@@ -29,18 +29,22 @@
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 
 	<ul id="dropdown1" class="dropdown-content">
-		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear Auditoria</a></li>
+		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear
+				Auditoria</a></li>
 		<li><a href="ServletCrearUsuario?action=crearUsuario">Crear
 				Usuario</a></li>
-		<li class="divider"></li>
 		<li><a href="#!">Crear Grupo</a></li>
+		<li><a href="ServletCrearProceso?action=crearProceso">Crear
+				Proceso</a></li>
 	</ul>
 	<ul id="dropdown2" class="dropdown-content">
-		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear Auditoria</a></li>
+		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear
+				Auditoria</a></li>
 		<li><a href="ServletCrearUsuario?action=crearUsuario">Crear
 				Usuario</a></li>
-		<li class="divider"></li>
 		<li><a href="#!">Crear Grupo</a></li>
+		<li><a href="ServletCrearProceso?action=crearProceso">Crear
+				Proceso</a></li>
 	</ul>
 	<nav class="teal">
 	<div class="nav-wrapper container">
@@ -66,54 +70,67 @@
 	</div>
 	</nav>
 
-	<br>
-	<br>
+	<br><br><br><br>
 
 	<div class="container">
-		<form class="col s12">
-			<div class="row">
-				<div class="col s9"></div>
-				<div class="input-field col s3">
-					<i class="material-icons prefix">search</i>
-		          	<input id="icon_prefix" type="text" class="validate">
-		          	<label for="icon_prefix">Busqueda</label>
-				</div>
+		<div class="row">
+			<div class="col s9"></div>
+			<div class="input-field col s3">
+				<i class="material-icons prefix">search</i>
+	          	<input id="icon_prefix" type="text" class="validate">
+	          	<label for="icon_prefix">Busqueda</label>
 			</div>
-			<div class="row">
-				<div class="input-field col s12">
-					<i class="material-icons prefix">assignments</i>
-					<label for="icon_telephone">Auditorias</label>
-					<br><br>
-					<table class="card-panel">
+		</div>
+		
+		<br><br><br>
+		
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">assignments</i>
+				<label for="icon_telephone">Auditorias</label>
+				<br><br>
+				<table class="card-panel">
+					<tr>
+						<th class="center">Clave de Negocio</th>
+						<th class="center">Auditor Lider</th>
+						<th class="center">Procesos</th>
+						<th class="center">Fecha</th>
+						<th class="center">Acciones</th>
+					</tr>
+					<c:forEach items="${auditorias}" var="auditoria">
 						<tr>
-							<th class="center">Clave</th>
-							<th class="center">Descripcion</th>
-							<th class="center">Procesos</th>
-							<th class="center">Fecha</th>
-							<th class="center">Acciones</th>
-						</tr>
-						<%for(int i = 0;i < 3;i++) { %>
-						<tr>
-							<td class="center">1</td>
-							<td class="center">Auditoria 1</td>
-							<td class="center">Proceso1, Proceso2, Proceso3, Proceso4</td>
-							<td class="center">11/08/2010</td>
+							<td class="center"><c:out value="${auditoria.claveNegocio}" /></td>
+							<c:forEach items="${usuarios}" var="usuario">
+								<c:if test="${usuario.idUsuario == auditoria.fk_usuario}">
+									<td class="center"><c:out value="${usuario.usuario}" /></td>
+								</c:if>
+							</c:forEach>
 							<td class="center">
-								<a class="waves-effect waves-light btn-floating red"><i class="material-icons left">delete</i></a>
+								<c:forEach items="${detalleAuditoriasProcesos}" var="detalleAuditoriasProceso">
+									<c:if test="${detalleAuditoriasProceso.fkAuditoria == auditoria.idAuditoria}">
+										<c:forEach items="${procesos}" var="proceso">
+											<c:if test="${detalleAuditoriasProceso.fkProceso == proceso.idProceso}">
+												<c:out value="- ${proceso.nombre}"/>
+											</c:if>
+										</c:forEach>
+									</c:if>
+								</c:forEach>
+							</td>
+							<td class="center"><c:out value="${auditoria.fecha}"/></td>
+							<td class="center">
 								<a class="waves-effect waves-light btn-floating cyan"><i class="material-icons left">border_color</i></a>
-								<a class="waves-effect waves-light btn-floating blue"><i class="material-icons left">access_time</i></a>
+								<a onclick="modificarItinerario(<c:out value="${auditoria.idAuditoria}" />)" class="waves-effect waves-light btn-floating blue"><i class="material-icons left">access_time</i></a>
+								<a onclick="eliminar(<c:out value="${auditoria.idAuditoria}" />)" class="waves-effect waves-light btn-floating red"><i class="material-icons left">delete</i></a>
 							</td>
 						</tr>
-						<%} %>
-					</table>
-				</div>
+					</c:forEach>
+				</table>
 			</div>
-		</form>
+		</div>
 	</div>
 		
-	<br>
-	<br>
-	<br>
+	<br><br><br>
+	
 	<footer class="page-footer teal">
 	<div class="container">
 		<div class="row">
@@ -137,7 +154,7 @@
 		</div>
 	</div>
 	<div class="footer-copyright">
-		<div class="container">© 2017 Copyright Gama Estrada José Manuel
+		<div class="container">Â© 2017 Copyright Gama Estrada JosÃ© Manuel
 		</div>
 	</div>
 	</footer>
@@ -148,5 +165,12 @@
 	$(document).ready(function() {
 		$(".button-collapse").sideNav();
 	})
+	
+	function eliminar(Auditoria) {
+		self.location = "${pageContext.request.contextPath}/ServletAuditorias?action=borrarAuditoria&idAuditoria=" + Auditoria;
+	}
+	function modificarItinerario(Auditoria) {
+		self.location = "${pageContext.request.contextPath}/ServletAuditorias?action=modificarItinerario&idAuditoria=" + Auditoria;
+	}
 </script>
 </html>

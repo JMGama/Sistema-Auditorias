@@ -30,18 +30,22 @@
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 
 	<ul id="dropdown1" class="dropdown-content">
-		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear Auditoria</a></li>
+		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear
+				Auditoria</a></li>
 		<li><a href="ServletCrearUsuario?action=crearUsuario">Crear
 				Usuario</a></li>
-		<li class="divider"></li>
-		<li><a href="ServletCrearAuditoria?action=crearUsuario">Crear Grupo</a></li>
+		<li><a href="#!">Crear Grupo</a></li>
+		<li><a href="ServletCrearProceso?action=crearProceso">Crear
+				Proceso</a></li>
 	</ul>
 	<ul id="dropdown2" class="dropdown-content">
-		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear Auditoria</a></li>
+		<li><a href="ServletCrearAuditoria?action=crearAuditoria">Crear
+				Auditoria</a></li>
 		<li><a href="ServletCrearUsuario?action=crearUsuario">Crear
 				Usuario</a></li>
-		<li class="divider"></li>
 		<li><a href="#!">Crear Grupo</a></li>
+		<li><a href="ServletCrearProceso?action=crearProceso">Crear
+				Proceso</a></li>
 	</ul>
 	<nav class="teal">
 	<div class="nav-wrapper container">

@@ -3,6 +3,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet"
@@ -19,7 +21,7 @@
 
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sistema Auditorias</title>
+<title>Crear Proceso</title>
 </head>
 <body>
 	<script type="text/javascript"
@@ -46,9 +48,9 @@
 	</ul>
 	<nav class="teal">
 	<div class="nav-wrapper container">
-		<a href="ServletCrearUsuario?action=home" class="brand-logo"> Sistema Auditorias</a> <a href="#"
-			data-activates="mobile-demo" class="button-collapse"><i
-			class="material-icons">menu</i></a>
+		<a href="ServletCrearUsuario?action=home" class="brand-logo">
+			Sistema Auditorias</a> <a href="#!" data-activates="mobile-demo"
+			class="button-collapse"><i class="material-icons">menu</i></a>
 		<ul class="right hide-on-med-and-down">
 			<li><a href="ServletCalendario?action=calendario">Calendario</a></li>
 			<li><a href="ServletAuditorias?action=auditorias">Auditorias</a></li>
@@ -67,12 +69,55 @@
 		</ul>
 	</div>
 	</nav>
+
 	<br>
-	<div class="center row">
-		<img class="responsive-img" src="imagenes/Welcome.jpg">
+	<br>
+	<div class="container">
+		<div class="row">
+			<form id="formulario" class="col s12" action="ServletCrearProceso"
+				method="post">
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="material-icons prefix">assignment</i> <input
+							name="nombre" id="nombre" type="text" class="validate">
+						<label for="icon_prefix">Nombre del proceso</label>
+					</div>
+					<div class="input-field col s6">
+						<label for="icon_prefix"> :</label>
+					</div>
+					<div class="input-field col s6">
+						<i class="material-icons prefix">today</i> <input id="fecha"
+							type="text" class="validate" disabled> <label
+							for="icon_prefix"> Fecha</label>
+					</div>
+				</div>
+				<br>
+				<br>
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="material-icons prefix">bookmark_border</i>
+						<textarea name="descripcion" id="descripcion" class="materialize-textarea"></textarea>
+						<label for="textarea1">Descripcion</label>
+					</div>
+				</div>
+				<br><br>
+				<div class="col s6 offset-s5">
+				
+					<input type="hidden" name="action" value="finalizarProceso" />
+					<button class="btn waves-effect waves-light orange" type="submit"
+						name="action">
+						Guardar <i class="material-icons right">send</i>
+					</button>
+				</div>
+			</form>
+		</div>
 	</div>
 
 
+
+	<br>
+	<br>
+	<br>
 	<footer class="page-footer teal">
 	<div class="container">
 		<div class="row">
@@ -101,11 +146,35 @@
 	</div>
 	</footer>
 
-
 </body>
 <script>
 	$(document).ready(function() {
 		$(".button-collapse").sideNav();
 	})
+
+	$(document).ready(function() {
+		$('select').material_select();
+	});
+	
+	$(document).ready(function() {
+		var f = new Date();
+		var fecha = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f
+				.getFullYear());
+		$("#fecha").val(fecha);
+
+	})
+	
+	$('#formulario').submit(function(e) {
+		
+		if ($("#nombre").val() == "" || $("#nombre").val() == null) {
+			Materialize.toast('Es necesario definir un nombre', 3000, 'rounded')
+			return false;
+		}else if ($("#descripcion").val() == "" || $("#descripcion").val() == null){
+			Materialize.toast('Tienes que poner una descripcion', 3000, 'rounded')
+			return false;
+		}else{
+			return true;
+		}
+	});
 </script>
 </html>

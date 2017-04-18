@@ -21,9 +21,13 @@
 
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Crear Auditoria</title>
+<title>Crear Itinerario</title>
 </head>
 <body>
+	<%
+		int idAuditoria = (Integer)request.getAttribute("idAuditoria");
+	%>
+
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
@@ -74,29 +78,40 @@
 	<br>
 	<div class="container">
 		<div class="row">
-			<form id="formulario" class="col s12" action="ServletCrearAuditoria"
+			<form id="formulario" class="col s12" action="ServletActividades"
 				method="post">
+				<input type="hidden" name="idAuditoria" value=<%= idAuditoria %>> 
 				<div class="row">
 					<div class="input-field col s6">
-						<i class="material-icons prefix">store_mall_directory</i> <input
-							name="claveNegocio" id="claveNegocio" type="text" class="validate">
-						<label for="icon_prefix">Clave del negocio</label>
+						<i class="material-icons prefix" name="icono">today</i><label
+							for="icono">Fecha</label><br> <input id="fecha" type="date"
+							class="datepicker" name="fecha" >
 					</div>
-					<div class="input-field col s6">
-						<i class="material-icons prefix">today</i> <input id="fecha"
-							type="text" class="validate" name="fecha" disabled> <label
-							for="icon_prefix"> Fecha</label>
+					<div class="input-field col s2">
+						<i class="material-icons prefix">alarm</i> <br>
+						<input id="hora" type="number" class="validate" name="horas">
+						<label for="icon_prefix">Hora</label>
+					</div>
+					<div class="input-field col s0">
+						<br>
+						<p style="font-weight: bold;">:</p>
+					</div>
+					<div class="input-field col s2">
+						<br>
+						<input id="minuto" type="number" class="validate" name="minutos">
+						<label for="icon_prefix">Minuto</label>
 					</div>
 				</div>
 
-				<br> <br>
+				<br> 
 				<div class="row">
 					<div class="input-field col s12">
-						<i class="material-icons prefix">assignment</i> <select
-							id="procesos" name="procesos" multiple>
-							<option value="" disabled selected>Selecciona los procesos</option>
-							<c:forEach items="${procesos}" var="proceso">
-								<option value="<c:out value="${proceso.idProceso}" />"><c:out value="${proceso.nombre}" />
+						<i class="material-icons prefix">place</i> <select
+							id="ubicacion" name="ubicacion">
+							<option value="" disabled selected>Selecciona la ubicacion</option>
+							<c:forEach items="${ubicaciones}" var="ubicacion">
+								<option value="<c:out value="${ubicacion.idUbicacion}" />"><c:out
+										value="${ubicacion.nombre}" />
 								</option>
 							</c:forEach>
 						</select>
@@ -104,69 +119,56 @@
 				</div>
 				<br> <br>
 				<div class="row">
-					<div class="input-field col s12">
-						<i class="material-icons prefix">verified_user</i> <select
-							id="auditorLider" name="auditorLider">
-							<option value="" disabled selected>Auditor lider</option>
-							<c:forEach items="${usuarios}" var="usuario">
-								<option value="<c:out value="${usuario.idUsuario}" />"><c:out value="${usuario.usuario}" /></option>
-							</c:forEach>
-						</select>
+					<div class="input-field col s11">
+						<i class="material-icons prefix" name="icono">assignment</i><label
+							for="icono">Actividad</label><br> <input id="actividad" type="text"
+							class="validate" name="descripcion">
 					</div>
-				</div>
-				<br>
-				<br>
+					<div class="input-field col s1">
+						<input type="hidden" name="action" value="actualizarItinerario" />
+						<button class="btn-floating btn-large waves-effect waves-light red" type="submit">
+							<i class="material-icons right">add</i>
+						</button>
+					</div>
+				</div><br>
 				<div class="row">
 					<div class="input-field col s12">
-						<i class="material-icons prefix">people</i> <select
-							id="grupos" name="grupos" multiple>
-							<option value="" disabled selected>Selecciona el grupo</option>
-							<c:forEach items="${grupos}" var="grupo">
-								<option value="<c:out value="${grupo.idGrupo}" />"><c:out value="${grupo.nombre}" />
-								</option>
+						<i class="material-icons prefix">book</i>
+						<label for="icon_telephone">Actividades</label>
+						<br><br>
+						<table class="card-panel">
+							<tr>
+								<th class="center">Fecha</th>
+								<th class="center">Hora</th>
+								<th class="center">Ubicacion</th>
+								<th class="center">Actividad</th>
+							</tr>
+							<c:forEach items="${actividades}" var="actividad">
+								<tr>
+									<td class="center"><c:out value="${actividad.fecha}"/></td>
+									<td class="center"><c:out value="${actividad.hora}"/></td>
+									<td class="center"><c:out value="${actividad.nombreUbicacion}"/></td>
+									<td class="center"><c:out value="${actividad.descripcion}"/></td>
+								</tr>
 							</c:forEach>
-						</select>
+						</table>
 					</div>
 				</div>
-				<br>
-				<br>
-				<div class="row">
-					<div class="input-field col s6">
-						<i class="material-icons prefix">equalizer</i>
-						<textarea id="objetivo" name="objetivo" class="materialize-textarea"></textarea>
-						<label for="objetivo">Objetivo</label>
-					</div>
-					<div class="input-field col s6">
-						<i class="material-icons prefix">trending_up</i>
-						<textarea id="alcance" name="alcance" class="materialize-textarea"></textarea>
-						<label for="alcance">Alcance</label>
-					</div>
-				</div>
-				<br>
-				<br>
-				<div class="row">
-					<div class="file-field input-field">
-						<div class="btn red">
-							<span>File</span> <input type="file" multiple>
-						</div>
-						<div class="file-path-wrapper">
-							<input class="file-path validate" type="text"
-								placeholder="Documentos para la auditoria">
-						</div>
-					</div>
-				</div>
-				<br>
-				<br>
+				<br><br>
+			</form>
+			<form>
 				<div class="col s6 offset-s5">
-					<input type="hidden" name="action" value="finalizarAuditoria" />
+					<input type="hidden" name="action" value="finalizarItinerario" />
 					<button class="btn waves-effect waves-light orange" type="submit">
-						Continuar <i class="material-icons right">send</i>
+						Finalizar <i class="material-icons right">send</i>
 					</button>
 				</div>
 			</form>
 		</div>
 	</div>
-	<br><br><br>
+	<br>
+	<br>
+	<br>
 	<footer class="page-footer teal">
 	<div class="container">
 		<div class="row">
@@ -198,6 +200,12 @@
 
 </body>
 <script>
+	$('.datepicker').pickadate({
+		selectMonths : true, // Creates a dropdown to control month
+		selectYears : 15
+	// Creates a dropdown of 15 years to control year
+	});
+
 	$(document).ready(function() {
 		$(".button-collapse").sideNav();
 	})
@@ -206,36 +214,40 @@
 		$('select').material_select();
 	});
 
-	$(document).ready(function() {
-		var f = new Date();
-		var fecha = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f
-				.getFullYear());
-		$("#fecha").val(fecha);
-
-	});
-	
 	$('#formulario').submit(function(e) {
-		if ($("#claveNegocio").val() == "" || $("#claveNegocio").val() == null) {
-			Materialize.toast('Es necesario definir la Clave del Negocio', 3000, 'rounded')
-			return false;
-		}else if ($("#procesos").val() == "" || $("#procesos").val() == null){
-			Materialize.toast('Es necesario seleccionar almenos un Proceso', 3000, 'rounded')
-			return false;
-		}else if ($("#auditorLider").val() == "" || $("#auditorLider").val() == null){
-			Materialize.toast('Es necesario seleccionar un Auditor Lider', 3000, 'rounded')
-			return false;
-		}else if ($("#grupos").val() == "" || $("#grupos").val() == null){
-			Materialize.toast('Es necesario seleccionar almenos un Grupo', 3000, 'rounded')
-			return false;
-		}else if ($("#objetivo").val() == "" || $("#objetivo").val() == null){
-			Materialize.toast('Es necesario definir el Objetivo', 3000, 'rounded')
-			return false;
-		}else if ($("#alcance").val() == "" || $("#alcance").val() == null){
-			Materialize.toast('Es necesario definir el Alcance', 3000, 'rounded')
-			return false;
-		}else{
+		var verificar = false;
+		if ($("#fecha").val() == ""
+				|| $("#fecha").val() == null) {
+			Materialize.toast(
+					'Es necesario definir la Fecha', 3000,
+					'rounded')
+		} else if ($("#hora").val() == ""
+				|| $("#hora").val() == null) {
+			Materialize.toast(
+					'Es necesario definir la Hora',
+					3000, 'rounded')
+		} else if ($("#minuto").val() == ""
+				|| $("#minuto").val() == null) {
+			Materialize.toast(
+					'Es necesario definir el Minuto', 3000,
+					'rounded')
+		} else if ($("#ubicacion").val() == ""
+				|| $("#ubicacion").val() == null) {
+			Materialize.toast(
+					'Es necesario seleccionar la Ubicacion', 3000,
+					'rounded')
+		} else if ($("#actividad").val() == ""
+				|| $("#actividad").val() == null) {
+			Materialize.toast('Es necesario definir la Actividad', 3000,
+					'rounded')
+		} else {
+			verificar = true;
+		}
+		
+		if (verificar) {
 			return true;
+		}else{
+			return false;
 		}
 	});
 </script>
-</html>

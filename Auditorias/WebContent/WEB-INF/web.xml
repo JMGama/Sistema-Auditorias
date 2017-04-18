@@ -59,4 +59,24 @@
     <servlet-name>ServletCrearAuditoria</servlet-name>
     <url-pattern>/ServletCrearAuditoria</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ServletCrearProceso</display-name>
+    <servlet-name>ServletCrearProceso</servlet-name>
+    <servlet-class>controller.ServletCrearProceso</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletCrearProceso</servlet-name>
+    <url-pattern>/ServletCrearProceso</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ServletActividades</display-name>
+    <servlet-name>ServletActividades</servlet-name>
+    <servlet-class>controller.ServletActividades</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ServletActividades</servlet-name>
+    <url-pattern>/ServletActividades</url-pattern>
+  </servlet-mapping>
 </web-app>
